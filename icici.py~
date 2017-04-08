@@ -11,9 +11,9 @@ print coloumns
 labels=[]
 for index,row in dataset.iterrows():
 	list=[]
-	for c in coloumns[:6]:
+	for c in coloumns[:11]:
 		list.append(row[c])
-	c=coloumns[-1]
+	c=coloumns[18]
 	labels.append(row[c])
 	data.append(list)
 imp = Imputer(missing_values='NaN', strategy='mean', axis=0)
