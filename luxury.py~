@@ -4,7 +4,7 @@ from sklearn.tree import DecisionTreeClassifier
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import Imputer
-dataset=pd.read_csv('necessity.csv')
+dataset=pd.read_csv('luxury.csv')
 coloumns=list(dataset)
 def food():
 	labels=[]
@@ -24,9 +24,9 @@ def food():
 			         n_estimators=200)
 	clf.fit(data,labels)
 
-	data1=[0.841987824,0.804347826,0.9074916,0.874692437,0.52173913,0.925664503]
+	data1=[0.986021972,0.518867925,0.963674868,0.743931132,0.613207547,0.905005093]
 	a=clf.predict(data1)
 	return a
-food()
+luxury()
 
 
