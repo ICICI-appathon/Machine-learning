@@ -1,22 +1,17 @@
-
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import AdaBoostClassifier
+from sklearn.tree import DecisionTreeClassifier
+
 from sklearn.linear_model import LogisticRegression
-
-
-train_df = pd.read_csv('train_u6lujuX_CVtuZ9i.csv',index_col=0)
-col_names = train_df.columns.tolist()
-
 encode_features = ['Gender','Married','Education','Self_Employed','Dependents','Loan_Status']
-
 fillna_withmean = ['LoanAmount','Loan_Amount_Term']
 fillna_withmostcommon = ['Dependents','Gender','Credit_History','Married','Self_Employed']
-
-
+    
 def transform_df(data):
     
     #Removing Loans_ID
@@ -48,22 +43,21 @@ def transform_df(data):
 
     
     return df
-
-train_df = transform_df(train_df)
-
-train_df.insert(len(train_df.columns)-1,'Loan_Status',train_df.pop('Loan_Status'))
-scale_features = ['LoanAmount','Loan_Amount_Term','Household_Income']
-
-train_df[scale_features] = train_df[scale_features].apply(lambda x:(x.astype(int) - min(x))/(max(x)-min(x)), axis = 0)
-
-X_train = train_df.iloc[:, :-1]
-Y_train = train_df.iloc[:,-1]
-
-Y_train.head()
-clf = LogisticRegression()
-clf = clf.fit(X_train, Y_train)
-def loan(test):
-	test_df = transform_df(data)
-	test_df[scale_features] = test_df[scale_features].apply(lambda x:(x.astype(int) - min(x))/(max(x)-min(x)), axis = 0)	
-	X_test = test_df		
-	Y_test = clf.predict(X_test)
+def loan():
+    train_df = pd.read_csv('train_u6lujuX_CVtuZ9i.csv',index_col=0)
+    test_df=pd.read_csv('train_u6lujuX_CVtuZ9i.csv',index_col=0)
+    col_names = train_df.columns.tolist()
+    train_df = transform_df(train_df)
+    test_df = transform_df(test_df)
+    train_df.insert(len(train_df.columns)-1,'Loan_Status',train_df.pop('Loan_Status'))
+    scale_features = ['LoanAmount','Loan_Amount_Term','Household_Income']
+    train_df[scale_features] = train_df[scale_features].apply(lambda x:(x.astype(int) - min(x))/(max(x)-min(x)), axis = 0)
+    test_df[scale_features] = test_df[scale_features].apply(lambda x:(x.astype(int) - min(x))/(max(x)-min(x)), axis = 0)
+    X_train = train_df.iloc[:, :-1]
+    Y_train = train_df.iloc[:,-1]
+    clf = LogisticRegression()
+    clf = clf.fit(X_train, Y_train)
+    X_test=test_df		
+    Y_test = clf.predict(X_train)
+    print Y_test[17]
+loan()

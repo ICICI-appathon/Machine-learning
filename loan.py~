@@ -62,8 +62,10 @@ Y_train = train_df.iloc[:,-1]
 Y_train.head()
 clf = LogisticRegression()
 clf = clf.fit(X_train, Y_train)
-def fun(test):
+def loan():
+	data=['LP001002','Male','No',0,'Graduate','No',5849,0,360,1,'Urban']
 	test_df = transform_df(data)
 	test_df[scale_features] = test_df[scale_features].apply(lambda x:(x.astype(int) - min(x))/(max(x)-min(x)), axis = 0)	
 	X_test = test_df		
 	Y_test = clf.predict(X_test)
+loan()
