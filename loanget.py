@@ -1,4 +1,6 @@
 import pandas as pd
+import numpy as np
+import pandas as pd
 import pickle
 import numpy as np
 import matplotlib.pyplot as plt
@@ -10,10 +12,14 @@ from sklearn.ensemble import AdaBoostClassifier
 from sklearn.tree import DecisionTreeClassifier
 
 from sklearn.linear_model import LogisticRegression
+
+from sklearn import model_selection
+from sklearn.linear_model import LogisticRegression
+import pickle
 encode_features = ['Gender','Married','Education','Self_Employed','Dependents','Loan_Status']
 fillna_withmean = ['LoanAmount','Loan_Amount_Term']
 fillna_withmostcommon = ['Dependents','Gender','Credit_History','Married','Self_Employed']
-    
+scale_features = ['LoanAmount','Loan_Amount_Term','Household_Income']    
 def transform_df(data):
     
     #Removing Loans_ID
@@ -46,20 +52,15 @@ def transform_df(data):
     
     return df
 
-train_df = pd.read_csv('train_u6lujuX_CVtuZ9i.csv',index_col=0)
-test_df=pd.read_csv('train_u6lujuX_CVtuZ9i.csv',index_col=0)
-col_names = train_df.columns.tolist()
-train_df = transform_df(train_df)
-test_df = transform_df(test_df)
-train_df.insert(len(train_df.columns)-1,'Loan_Status',train_df.pop('Loan_Status'))
-scale_features = ['LoanAmount','Loan_Amount_Term','Household_Income']
-train_df[scale_features] = train_df[scale_features].apply(lambda x:(x.astype(int) - min(x))/(max(x)-min(x)), axis = 0)
-test_df[scale_features] = test_df[scale_features].apply(lambda x:(x.astype(int) - min(x))/(max(x)-min(x)), axis = 0)
-X_train = train_df.iloc[:, :-1]
-Y_train = train_df.iloc[:,-1]
-clf = linear_model.BayesianRidge()
-clf = clf.fit(X_train, Y_train)
-filename='loan.sav'
-pickle.dump(clf,open(filename,'wb'))
 
-    
+def loan() :
+	filename='loan.sav'
+	clf = pickle.load(open(filename, 'rb'))
+	train_df = pd.read_csv('train_u6lujuX_CVtuZ9i.csv',index_col=0)
+	train_df = transform_df(train_df)
+	train_df.insert(len(train_df.columns)-1,'Loan_Status',train_df.pop('Loan_Status'))
+	train_df[scale_features] = train_df[scale_features].apply(lambda x:(x.astype(int) - min(x))/(max(x)-min(x)), axis = 0)
+	X_train = train_df.iloc[:, :-1]
+	a=clf.predict(X_train)
+	return a[14]*100
+loan()
